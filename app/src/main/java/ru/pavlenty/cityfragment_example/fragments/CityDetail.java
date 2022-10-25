@@ -1,19 +1,20 @@
 package ru.pavlenty.cityfragment_example.fragments;
-
+// Выводит описание города
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import ru.pavlenty.cityfragment_example.R;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import ru.pavlenty.cityfragment_example.R;
 
 
 public class CityDetail extends Fragment {
@@ -29,8 +30,9 @@ public class CityDetail extends Fragment {
         cityMenu = Arrays.asList(getResources().getStringArray(R.array.cities));
         cityDesc = Arrays.asList(getResources().getStringArray(R.array.descriptions));
 
-        if(savedInstanceState == null){
-            if(getArguments() != null) {
+        // Получаем позицию (номер) аргументов
+        if (savedInstanceState == null) {
+            if (getArguments() != null) {
                 position = getArguments().getInt("position", 0);
             }
         }
@@ -43,13 +45,12 @@ public class CityDetail extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-        tvTitle =  view.findViewById(R.id.tvTitle);
+        // Заполняем элементы с учетом полученной позиции
+        tvTitle = view.findViewById(R.id.tvTitle);
         tvDetails = view.findViewById(R.id.tvDetails);
         tvTitle.setText(cityMenu.get(position));
-         tvDetails.setText(cityDesc.get(position));
+        tvDetails.setText(cityDesc.get(position));
     }
-
 
 
 }

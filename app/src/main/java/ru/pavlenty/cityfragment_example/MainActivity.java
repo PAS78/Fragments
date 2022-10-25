@@ -1,15 +1,15 @@
 package ru.pavlenty.cityfragment_example;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.res.Configuration;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import ru.pavlenty.cityfragment_example.fragments.CityDetail;
 import ru.pavlenty.cityfragment_example.fragments.MenuDetail;
 
-
+// Имплементируемся от Адаптера для реализации кликов (onCityItemSelected)
 public class MainActivity extends AppCompatActivity implements MyAdapter.ItemClickListener {
 
     @Override
@@ -17,19 +17,26 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.ItemCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(savedInstanceState == null) {
+        // Работает с фрагментом
+        if (savedInstanceState == null) {
+            // Создаем объект фрагмента
             MenuDetail md = new MenuDetail();
+            // Открываем транзакцию
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.flContainer,md);
+            // Добавляем в flContainer RecyclerView с Меню
+            ft.add(R.id.flContainer, md);
+            // Подтверждает транзакцию
             ft.commit();
         }
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+        // Если ориентация альбомная сразу заполняем и flContainer2 0-позицией Города
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             CityDetail cdet = new CityDetail();
             Bundle cdet_args = new Bundle();
-            cdet_args.putInt("position",0);
+            cdet_args.putInt("position", 0);
             cdet.setArguments(cdet_args);
             FragmentTransaction ft_cdet = getSupportFragmentManager().beginTransaction();
-            ft_cdet.add(R.id.flContainer2,cdet);
+            ft_cdet.add(R.id.flContainer2, cdet);
             ft_cdet.commit();
         }
 
@@ -39,12 +46,17 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.ItemCli
     public void onCityItemSelected(int position) {
         CityDetail cd = new CityDetail();
         FragmentTransaction ftsel = getSupportFragmentManager().beginTransaction();
+
+        // Посылка с выбранным Городом (для отоброжения в горизонтальном режиме)
         Bundle args = new Bundle();
-        args.putInt("position",position);
+        args.putInt("position", position);
         cd.setArguments(args);
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            ftsel.replace(R.id.flContainer2,cd).commit();
+
+        // Заполняем нужный фрейм от положение экрана
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ftsel.replace(R.id.flContainer2, cd).commit();
         } else {
+            // При вертикальном экране нужна кнопка Назад
             ftsel.replace(R.id.flContainer, cd).addToBackStack(null).commit();
         }
 

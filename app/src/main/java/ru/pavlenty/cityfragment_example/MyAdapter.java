@@ -25,6 +25,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         this.mContext = context;
     }
 
+    // Делаем свой Holder
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView myTextView;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            myTextView = itemView.findViewById(R.id.tvCityName);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) mClickListener.onCityItemSelected(getAdapterPosition());
+        }
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.recyclerview_row, parent, false);
@@ -42,26 +58,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return mData.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
-        TextView myTextView;
-        ViewHolder(View itemView) {
-            super(itemView);
-            myTextView = itemView.findViewById(R.id.tvCityName);
-            itemView.setOnClickListener(this);
-        }
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onCityItemSelected(getAdapterPosition());
-        }
-    }
-
     // отслежтваем клики по row
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    // в активности реализуем метод, который будет обрабатывать клики по row
+    // Интерфейс.
+    // В активности реализуем метод, который будет обрабатывать клики по row
     public interface ItemClickListener {
         void onCityItemSelected(int position);
     }
+
 }

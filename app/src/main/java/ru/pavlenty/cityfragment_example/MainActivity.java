@@ -17,7 +17,8 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.ItemCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Работает с фрагментом
+        // Работаем с фрагментом
+        // Если это первый запуск
         if (savedInstanceState == null) {
             // Создаем объект фрагмента
             MenuDetail md = new MenuDetail();
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.ItemCli
 
     }
 
+    // Реализауем Интерфейс MyAdapter.ItemClickListener
+    // Обработка клика на меню
     @Override
     public void onCityItemSelected(int position) {
         CityDetail cd = new CityDetail();
@@ -53,8 +56,10 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.ItemCli
         cd.setArguments(args);
 
         // Заполняем нужный фрейм от положение экрана
+        // Если вертикальное, то заменяем второй контенер на содержимое фрагмента CityDetail
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ftsel.replace(R.id.flContainer2, cd).commit();
+            // Если вертикальное то заменяем единый контейнер
         } else {
             // При вертикальном экране нужна кнопка Назад
             ftsel.replace(R.id.flContainer, cd).addToBackStack(null).commit();
